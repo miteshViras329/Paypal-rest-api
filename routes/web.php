@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::group(['prefix' => 'paypal', 'controller' => PayPalController::class], function () {
-    Route::get('/pay', 'pay');
+    Route::post('/', 'store')->name('pay');
+    Route::get('/createOrder', 'createOrder');
 });
