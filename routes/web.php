@@ -38,7 +38,7 @@ Route::group(['prefix' => 'product', 'controller' => ProductController::class], 
 Route::group(['prefix' => 'plan', 'controller' => PlanController::class], function () {
     Route::get('/', 'showList');
     Route::get('/show', 'show');
-    Route::get('/create', 'createProduct');
+    Route::get('/create', 'createPlan');
     Route::get('/edit', 'updateProduct');
     Route::get('/activate', 'activate');
     Route::get('/deactivate', 'deActivate');
