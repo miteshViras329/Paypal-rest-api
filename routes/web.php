@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\PayPalController;
 use Illuminate\Support\Facades\Route;
 
@@ -17,10 +18,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::group(['prefix' => 'paypal', 'controller' => PayPalController::class], function () {
+Route::group(['prefix' => 'paypal', 'controller' => CheckoutController::class], function () {
     Route::post('/', 'store')->name('pay');
     Route::get('/createOrder', 'createOrder');
     Route::get('/executeOrder', 'executeOrder');
     Route::get('/cancel', 'cancel');
-    Route::get('/success', 'executeOrder');
+    Route::get('/success', 'checkOrder');
 });
