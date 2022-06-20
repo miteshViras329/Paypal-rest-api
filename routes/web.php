@@ -20,4 +20,7 @@ Route::get('/', function () {
 Route::group(['prefix' => 'paypal', 'controller' => PayPalController::class], function () {
     Route::post('/', 'store')->name('pay');
     Route::get('/createOrder', 'createOrder');
+    Route::get('/executeOrder', 'executeOrder');
+    Route::get('/cancel', 'cancel');
+    Route::get('/success', 'executeOrder');
 });

@@ -8,7 +8,9 @@ use Illuminate\Support\Facades\Redirect;
 
 class PayPalController extends Controller
 {
-    private $credentials, $bearer_token, $app_id;
+    private $credentials;
+    private $bearer_token;
+    private $app_id;
     public $client;
     public function __construct()
     {
@@ -51,14 +53,10 @@ class PayPalController extends Controller
         $this->createOrder($data);
     }
 
-    public function getAccessToken()
-    {
-        return $this->bearer_token;
-    }
-
     public function createOrder($data)
     {
-        $res = $this->client->request('post', 'https://api-m.sandbox.paypal.com/v2/checkout/orders/', [
+        $url = 'https://api-m.sandbox.paypal.com/v2/checkout/orders/';
+        $res = $this->client->request('post', $url, [
             'headers' => [
                 'Accept' => 'application/json',
                 'Accept-Language' => 'en_US',
@@ -74,16 +72,45 @@ class PayPalController extends Controller
                         'currency_code' => 'USD',
                     ],
                 ]],
-            ], "application_context" => [
-                "cancel_url" => config('paypal.cancle_url'),
-                "return_url" => config('paypal.return_url'),
-                "brand_name" => 'Iphone 11',
-            ],
+                "application_context" => [
+                    "cancel_url" => config('paypal.cancle_url'),
+                    "return_url" => config('paypal.return_url'),
+                    "brand_name" => 'Skyrush.io',
+                ],
+            ]
         ]);
 
         $order = json_decode($res->getBody()->getContents());
-        // dd($order);
-        // return redirect()->to('https://www.sandbox.paypal.com/checkoutnow?token=' . $order->id);
         return redirect()->to($order->links[1]->href)->send();
+    }
+
+    public function executeOrder()
+    {
+        try {
+            $url = 'https://api-m.sandbox.paypal.com/v2/checkout/orders/' . request()->token . '/capture';
+            $res = $this->client->request('post', $url, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->bearer_token,
+                ],
+            ]);
+
+            $order = json_decode($res->getBody()->getContents());
+            dd($order);
+        } catch (\Throwable $th) {
+            dd($th);
+        }
+    }
+
+    public function checkOrder()
+    {
+    }
+
+    public function cancel()
+    {
+        dd('Sorry You Payment Has Been Cancled By User');
+        return redirect()->route('/');
     }
 }
