@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
+use GuzzleHttp\Exception\ClientException;
 
 class PayPalController extends Controller
 {
@@ -29,17 +30,21 @@ class PayPalController extends Controller
 
     private function authentication()
     {
-        $res = $this->client->request('post', 'https://api-m.sandbox.paypal.com/v1/oauth2/token', [
-            'auth' => $this->credentials,
-            'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
-            'form_params' => [
-                'grant_type' => 'client_credentials',
-            ],
-        ]);
+        try {
+            $res = $this->client->request('post', 'https://api-m.sandbox.paypal.com/v1/oauth2/token', [
+                'auth' => $this->credentials,
+                'headers' => ['Content-Type' => 'application/x-www-form-urlencoded'],
+                'form_params' => [
+                    'grant_type' => 'client_credentials',
+                ],
+            ]);
 
-        $body = json_decode($res->getBody()->getContents());
-        $this->bearer_token = $body->access_token;
-        $this->provider = $body;
+            $body = json_decode($res->getBody()->getContents());
+            $this->bearer_token = $body->access_token;
+            $this->provider = $body;
+        } catch (ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
+        }
     }
 
     public function getAccessToken()

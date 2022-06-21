@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use GuzzleHttp\Client;
+use GuzzleHttp\Exception\ClientException;
 use App\Http\Controllers\PayPalController;
 
 class ProductController extends Controller
@@ -35,8 +36,8 @@ class ProductController extends Controller
 
             $body = json_decode($res->getBody()->getContents());
             dd('Product List', $body);
-        } catch (\Throwable $th) {
-            dd($th);
+        } catch (ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
         }
     }
 
@@ -54,8 +55,8 @@ class ProductController extends Controller
             ]);
             $body = json_decode($res->getBody()->getContents());
             dd('Product Detail', $body);
-        } catch (\Throwable $th) {
-            //throw $th;
+        } catch (ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
         }
     }
 
@@ -83,8 +84,8 @@ class ProductController extends Controller
 
             $body = json_decode($res->getBody()->getContents());
             dd('Product Created Successfully', $body);
-        } catch (\Throwable $th) {
-            dd($th);
+        } catch (ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
         }
     }
 
@@ -107,8 +108,8 @@ class ProductController extends Controller
                 ]]
             ]);
             dd('Product Updated Successfully');
-        } catch (\Throwable $th) {
-            dd($th);
+        } catch (ClientException $e) {
+            dd($e->getResponse()->getBody()->getContents());
         }
     }
 }
