@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
     public function createSubscription()
     {
         try {
-            $plan_id = 'P-19T662956N2231909MKYV7WQ';
+            $plan_id = 'P-3EA435785W369914KMKY2HZI';
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/subscriptions';
             $res = $this->client->request('POST', $url, [
                 'headers' => [
@@ -35,16 +35,9 @@ class SubscriptionController extends Controller
                 'json' => [
                     "plan_id" => $plan_id,
                     "auto_renewal" => true,
-                    "start_time" => Carbon::now()->addMinutes(10)->toISOString(), // ISO8601 and must be future time
                     "application_context" => [
-                        "brand_name" => "Skyrush",
-                        "locale" => "en-US",
-                        "shipping_preference" => "SET_PROVIDED_ADDRESS",
+                        "brand_name" => "SKYRUSH",
                         "user_action" => "SUBSCRIBE_NOW",
-                        "payment_method" => [
-                            "payer_selected" => "PAYPAL",
-                            "payee_preferred" => "IMMEDIATE_PAYMENT_REQUIRED"
-                        ],
                         "return_url" => config('paypal.return_url'),
                         "cancel_url" => config('paypal.cancel_url'),
                     ],

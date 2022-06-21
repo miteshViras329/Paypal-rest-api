@@ -111,7 +111,7 @@ class PlanController extends Controller
     public function createPlan()
     {
         try {
-            $product_id = 'PROD-3DN36045AB844170W';
+            $product_id = 'PROD-8MP67799P42213056';
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans';
             $res = $this->client->request('post', $url, [
                 'headers' => [
@@ -123,8 +123,8 @@ class PlanController extends Controller
                 ],
                 'json' => [
                     "product_id" => $product_id,
-                    "name" => "Skyrush Basic Plan",
-                    "description" => "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
+                    "name" => "Skyrush Daily",
+                    "description" => "Boost your audience with a Giveaway",
                     "status" => "ACTIVE",
                     "billing_cycles" => [
                         [
@@ -132,8 +132,8 @@ class PlanController extends Controller
                                 "interval_unit" => "DAY",
                                 "interval_count" => 1
                             ],
+                            "sequence" => "1",
                             "tenure_type" => "REGULAR",
-                            "sequence" => 1,
                             "total_cycles" => 12,
                             "pricing_scheme" => [
                                 "fixed_price" => [
@@ -150,12 +150,8 @@ class PlanController extends Controller
                             "currency_code" => "USD"
                         ],
                         "setup_fee_failure_action" => "CONTINUE",
-                        "payment_failure_threshold" => 3
+                        "payment_failure_threshold" => 1
                     ],
-                    "taxes" => [
-                        "percentage" => "5",
-                        "inclusive" => false
-                    ]
                 ]
             ]);
 
