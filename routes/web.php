@@ -1,10 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
-use App\Http\Controllers\PlanController;
+use App\Http\Controllers\SubscriptionController;
 
 /*
 |--------------------------------------------------------------------------
@@ -39,7 +40,12 @@ Route::group(['prefix' => 'plan', 'controller' => PlanController::class], functi
     Route::get('/', 'showList');
     Route::get('/show', 'show');
     Route::get('/create', 'createPlan');
-    Route::get('/edit', 'updateProduct');
+    Route::get('/edit', 'updatePlan');
     Route::get('/activate', 'activate');
     Route::get('/deactivate', 'deActivate');
+});
+
+Route::group(['prefix' => 'subscription', 'controller' => SubscriptionController::class], function () {
+    Route::get('/create', 'createSubscription');
+    Route::get('/edit', 'updateSubscription');
 });

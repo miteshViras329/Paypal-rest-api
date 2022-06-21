@@ -47,7 +47,7 @@ class PlanController extends Controller
     public function show()
     {
         try {
-            $plan_id = 'P-80E107653T4828148MKYBNII';
+            $plan_id = 'P-19T662956N2231909MKYV7WQ';
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans/' . $plan_id;
             $res = $this->client->request('get', $url, [
                 'headers' => [
@@ -123,47 +123,17 @@ class PlanController extends Controller
                 ],
                 'json' => [
                     "product_id" => $product_id,
-                    "name" => "Video Streaming Service Plan",
-                    "description" => "Video Streaming Service basic plan",
+                    "name" => "Skyrush Basic Plan",
+                    "description" => "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.",
                     "status" => "ACTIVE",
                     "billing_cycles" => [
                         [
                             "frequency" => [
-                                "interval_unit" => "MONTH",
-                                "interval_count" => 1
-                            ],
-                            "tenure_type" => "TRIAL",
-                            "sequence" => 1,
-                            "total_cycles" => 2,
-                            "pricing_scheme" => [
-                                "fixed_price" => [
-                                    "value" => "3",
-                                    "currency_code" => "USD"
-                                ]
-                            ]
-                        ],
-                        [
-                            "frequency" => [
-                                "interval_unit" => "MONTH",
-                                "interval_count" => 1
-                            ],
-                            "tenure_type" => "TRIAL",
-                            "sequence" => 2,
-                            "total_cycles" => 3,
-                            "pricing_scheme" => [
-                                "fixed_price" => [
-                                    "value" => "6",
-                                    "currency_code" => "USD"
-                                ]
-                            ]
-                        ],
-                        [
-                            "frequency" => [
-                                "interval_unit" => "MONTH",
+                                "interval_unit" => "DAY",
                                 "interval_count" => 1
                             ],
                             "tenure_type" => "REGULAR",
-                            "sequence" => 3,
+                            "sequence" => 1,
                             "total_cycles" => 12,
                             "pricing_scheme" => [
                                 "fixed_price" => [
@@ -176,14 +146,14 @@ class PlanController extends Controller
                     "payment_preferences" => [
                         "auto_bill_outstanding" => true,
                         "setup_fee" => [
-                            "value" => "10",
+                            "value" => "0",
                             "currency_code" => "USD"
                         ],
                         "setup_fee_failure_action" => "CONTINUE",
                         "payment_failure_threshold" => 3
                     ],
                     "taxes" => [
-                        "percentage" => "10",
+                        "percentage" => "5",
                         "inclusive" => false
                     ]
                 ]
@@ -193,6 +163,34 @@ class PlanController extends Controller
             dd('Plan Create', $body);
         } catch (ClientException $e) {
             dd($e->getResponse()->getBody()->getContents());
+        }
+    }
+
+    public function updatePlan()
+    {
+        try {
+            $plan_id = 'P-07031543TH802742PMKYCCZQ';
+            $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans/' . $plan_id;
+            $res = $this->client->request('PATCH', $url, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->bearer_token,
+                ],
+                'json' => [
+                    [
+                        "op" => "replace",
+                        "path" => "/payment_preferences/payment_failure_threshold", //
+                        "value" => 15
+                    ]
+                ],
+            ]);
+            $body = json_decode($res->getBody()->getContents());
+            dd('Plan Update', $body);
+        } catch (ClientException $e) {
+            dd($e->getResponse());
+            dd('Exception', $e->getResponse()->getBody()->getContents());
         }
     }
 }
