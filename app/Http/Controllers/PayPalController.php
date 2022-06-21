@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Paypal;
 use GuzzleHttp\Client;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Redirect;
@@ -55,5 +56,14 @@ class PayPalController extends Controller
     public function getProvider()
     {
         return $this->provider;
+    }
+
+    public function webHook()
+    {
+        $webHook = request()->all();
+        Paypal::create([
+            'type' => request()->resource_type,
+            'json' => serialize($webHook),
+        ]);
     }
 }
