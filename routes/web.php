@@ -50,4 +50,4 @@ Route::group(['prefix' => 'subscription', 'controller' => SubscriptionController
     Route::get('/edit', 'updateSubscription');
 });
 
-Route::get('/web-hook', [PayPalController::class, 'webHook']);
+Route::post('/web-hook', [PayPalController::class, 'webHook']);

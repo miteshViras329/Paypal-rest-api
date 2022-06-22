@@ -35,9 +35,13 @@ class SubscriptionController extends Controller
                 'json' => [
                     "plan_id" => $plan_id,
                     "auto_renewal" => true,
+                    "subscriber" => [
+                        "user_id" => "329"
+                    ],
                     "application_context" => [
                         "brand_name" => "SKYRUSH",
                         "user_action" => "SUBSCRIBE_NOW",
+                        "local" => "en-US",
                         "return_url" => config('paypal.return_url'),
                         "cancel_url" => config('paypal.cancel_url'),
                     ],
