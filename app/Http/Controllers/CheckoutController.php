@@ -49,13 +49,13 @@ class CheckoutController extends Controller
                     "application_context" => [
                         "cancel_url" => config('paypal.cancle_url'),
                         "return_url" => config('paypal.return_url'),
-                        "brand_name" => 'Skyrush.io',
+                        "brand_name" => 'Skyrush.io', // Your Brand Name
                     ],
                 ]
             ]);
 
             $order = json_decode($res->getBody()->getContents());
-            return redirect()->to($order->links[1]->href)->send();
+            return redirect()->to($order->links[1]->href)->send(); // direct redirect to payment page
         } catch (ClientException $e) {
             dd($e->getResponse()->getBody()->getContents());
         }

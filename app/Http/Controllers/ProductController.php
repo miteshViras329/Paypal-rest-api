@@ -44,7 +44,8 @@ class ProductController extends Controller
     public function show()
     {
         try {
-            $url = 'https://api-m.sandbox.paypal.com/v1/catalogs/products/' . request()->token;
+            $product_id = ''; //replace with yours
+            $url = 'https://api-m.sandbox.paypal.com/v1/catalogs/products/' . $product_id;
             $res = $this->client->request('get', $url, [
                 'headers' => [
                     'Accept' => 'application/json',
@@ -93,7 +94,8 @@ class ProductController extends Controller
     {
         // note : patch method never return a response, check paypal api doc for more info.
         try {
-            $url = 'https://api-m.sandbox.paypal.com/v1/catalogs/products/' . request()->token;
+            $product_id = ''; //replace with yours
+            $url = 'https://api-m.sandbox.paypal.com/v1/catalogs/products/' . $product_id;
             $res = $this->client->request('patch', $url, [
                 'headers' => [
                     'Accept' => 'application/json',

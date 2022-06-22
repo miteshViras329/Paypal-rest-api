@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
     public function createSubscription()
     {
         try {
-            $plan_id = 'P-3EA435785W369914KMKY2HZI';
+            $plan_id = 'P-3EA435785W369914KMKY2HZI'; //replace with your
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/subscriptions';
             $res = $this->client->request('POST', $url, [
                 'headers' => [
@@ -53,51 +53,5 @@ class SubscriptionController extends Controller
             dd($e->getMessage());
             dd($e->getResponse()->getBody()->getContents());
         }
-    }
-
-    function temp()
-    {
-        $json = [
-            "plan_id" => $plan_id,
-            "auto_renewal" => true,
-            "start_time" => Carbon::now()->addMinutes(10)->toISOString(),
-            "quantity" => "1",
-            "shipping_amount" => [
-                "currency_code" => "USD",
-                "value" => "10.00"
-            ],
-            "subscriber" => [
-                "name" => [
-                    "given_name" => "Mitesh",
-                    "surname" => "Viras"
-                ],
-                "email_address" => "sb-6dmij14688129@personal.example.com",
-                "shipping_address" => [
-                    "name" => [
-                        "full_name" => "Mitesh Viras"
-                    ],
-                    "address" => [
-                        "address_line_1" => "2211 N First Street",
-                        "address_line_2" => "Building 17",
-                        "admin_area_2" => "San Jose",
-                        "admin_area_1" => "CA",
-                        "postal_code" => "95131",
-                        "country_code" => "US"
-                    ]
-                ]
-            ],
-            "application_context" => [
-                "brand_name" => "walmart",
-                "locale" => "en-US",
-                "shipping_preference" => "SET_PROVIDED_ADDRESS",
-                "user_action" => "SUBSCRIBE_NOW",
-                "payment_method" => [
-                    "payer_selected" => "PAYPAL",
-                    "payee_preferred" => "IMMEDIATE_PAYMENT_REQUIRED"
-                ],
-                "return_url" => config('paypal.return_url'),
-                "cancel_url" => config('paypal.cancel_url'),
-            ]
-        ];
     }
 }

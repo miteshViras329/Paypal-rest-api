@@ -26,7 +26,7 @@ class PlanController extends Controller
             $page_size = 10;
             $page = 1;
             $total = 'true';
-            $product_id = 'PROD-3DN36045AB844170W';
+            $product_id = 'PROD-3DN36045AB844170W'; //replace with yours
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans?product_id=' . $product_id . '&page_size=' . $page_size . '&page=' . $page . '&total_required=' . $total;
             $res = $this->client->request('get', $url, [
                 'headers' => [
@@ -47,7 +47,7 @@ class PlanController extends Controller
     public function show()
     {
         try {
-            $plan_id = 'P-19T662956N2231909MKYV7WQ';
+            $plan_id = 'P-19T662956N2231909MKYV7WQ'; //replace with yours
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans/' . $plan_id;
             $res = $this->client->request('get', $url, [
                 'headers' => [
@@ -68,7 +68,7 @@ class PlanController extends Controller
     {
         // Note : This is a sample code for activating a plan and it never return a response. reffer paypal api doc for more details.
         try {
-            $plan_id = 'P-80E107653T4828148MKYBNII';
+            $plan_id = 'P-80E107653T4828148MKYBNII'; //replace with yours
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans/' . $plan_id . '/activate';
             $res = $this->client->request('post', $url, [
                 'headers' => [
@@ -90,7 +90,7 @@ class PlanController extends Controller
     {
         // Note : This is a sample code for deactivating a plan and it never return a response. reffer paypal api doc for more details.
         try {
-            $plan_id = 'P-80E107653T4828148MKYBNII';
+            $plan_id = 'P-80E107653T4828148MKYBNII'; //replace with yours
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans/' . $plan_id . '/deactivate';
             $res = $this->client->request('post', $url, [
                 'headers' => [
@@ -111,7 +111,7 @@ class PlanController extends Controller
     public function createPlan()
     {
         try {
-            $product_id = 'PROD-8MP67799P42213056';
+            $product_id = 'PROD-8MP67799P42213056'; //replace with yours
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans';
             $res = $this->client->request('post', $url, [
                 'headers' => [
@@ -129,8 +129,8 @@ class PlanController extends Controller
                     "billing_cycles" => [
                         [
                             "frequency" => [
-                                "interval_unit" => "DAY",
-                                "interval_count" => 1
+                                "interval_unit" => "DAY", //DAY,MONTH,YEAR
+                                "interval_count" => 1 // GAP After Unit
                             ],
                             "sequence" => "1",
                             "tenure_type" => "REGULAR",
@@ -165,7 +165,7 @@ class PlanController extends Controller
     public function updatePlan()
     {
         try {
-            $plan_id = 'P-07031543TH802742PMKYCCZQ';
+            $plan_id = 'P-07031543TH802742PMKYCCZQ'; //replace with yours
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/plans/' . $plan_id;
             $res = $this->client->request('PATCH', $url, [
                 'headers' => [
@@ -177,7 +177,7 @@ class PlanController extends Controller
                 'json' => [
                     [
                         "op" => "replace",
-                        "path" => "/payment_preferences/payment_failure_threshold", //
+                        "path" => "/payment_preferences/payment_failure_threshold",
                         "value" => 15
                     ]
                 ],
