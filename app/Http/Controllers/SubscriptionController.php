@@ -22,7 +22,7 @@ class SubscriptionController extends Controller
     public function createSubscription()
     {
         try {
-            $plan_id = 'P-3EA435785W369914KMKY2HZI'; //replace with your
+            $plan_id = ''; //replace with your
             $url = 'https://api-m.sandbox.paypal.com/v1/billing/subscriptions';
             $res = $this->client->request('POST', $url, [
                 'headers' => [
