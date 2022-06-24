@@ -6,6 +6,7 @@ use App\Services\Paypal\Order;
 use App\Services\Paypal\Paypal;
 use App\Services\Paypal\Plan;
 use App\Services\Paypal\Product;
+use App\Services\Paypal\Subscription;
 
 class ServicesController extends Controller
 {
@@ -14,7 +15,8 @@ class ServicesController extends Controller
         $paypal = new Paypal();
         // $paypalOrder = new Order();
         // $paypalProduct = new Product();
-        $paypalPlan = new Plan();
+        // $paypalPlan = new Plan();
+        $paypalSubscription = new Subscription();
         $data = [
             // 'amount' => 500,
             // 'currency' => 'USD',
@@ -36,19 +38,25 @@ class ServicesController extends Controller
             // 'price_value' => 50,
             // 'currency_code' => 'USD',
             // 'setup_fee' => '0'
-            'name' => 'Scraper329',
-            'description' => 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
-            'interval_unit' => 'DAY',
-            'interval_count' => 1,
-            'total_cycles' => 12,
-            'price_value' => 50,
-            'currency_code' => 'USD',
-            'setup_fee' => 0
+            // 'name' => 'Scraper329',
+            // 'description' => 'It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout.',
+            // 'interval_unit' => 'DAY',
+            // 'interval_count' => 1,
+            // 'total_cycles' => 12,
+            // 'price_value' => 50,
+            // 'currency_code' => 'USD',
+            // 'setup_fee' => 0
+            'brand_name' => 'Skyrush V2',
+            'auto_renewal' => true,
+            'local' => 'en-US'
         ];
-        dd($paypalPlan->createPlan('PROD-3DN36045AB844170W', $data));
+        // dd($paypalPlan->createPlan('PROD-3DN36045AB844170W', $data));
         // dd($paypalProduct->showList());
         // dd($paypalProduct->show('PROD-3DN36045AB844170W'));
         // dd($paypalProduct->createProduct($data));
-        dd($paypalProduct->updateProduct('PROD-3DN36045AB844170W', $data));
+        // dd($paypalProduct->updateProduct('PROD-3DN36045AB844170W', $data));
+        // dd($paypalSubscription->createSubscription('P-3D018928N97379438MK2YHEI', $data));
+        // dd($paypalSubscription->show('I-W81GSLF3FPJL'));
+        dd($paypalSubscription->executeSubscription('I-W81GSLF3FPJL'));
     }
 }
