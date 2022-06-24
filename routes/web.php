@@ -5,6 +5,7 @@ use App\Http\Controllers\PlanController;
 use App\Http\Controllers\PayPalController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\ServicesController;
 use App\Http\Controllers\SubscriptionController;
 
 /*
@@ -51,3 +52,7 @@ Route::group(['prefix' => 'subscription', 'controller' => SubscriptionController
 });
 
 Route::post('/web-hook', [PayPalController::class, 'webHook']);
+
+Route::group(['prefix' => 'services', 'controller' => ServicesController::class], function () {
+    Route::get('index', 'index');
+});

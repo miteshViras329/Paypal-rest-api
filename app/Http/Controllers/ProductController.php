@@ -107,7 +107,7 @@ class ProductController extends Controller
                     'op' => 'replace', // replace, remove, add
                     'path' => '/description', // /name, /description, /type, /category, /image_url, /home_url
                     'value' => 'Skyrush', // value to replace
-                ]]
+                ],]
             ]);
             dd('Product Updated Successfully');
         } catch (ClientException $e) {
