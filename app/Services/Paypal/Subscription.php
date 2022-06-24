@@ -95,30 +95,29 @@ class Subscription
             return 'Subscription ID Is Required To View Its Details';
         }
         if (!empty($data)) {
-
             foreach ($data as $key => $value) {
                 if (empty($value['op'])) {
-                    $error[$key]['error_op'] = 'Plan Operation Is Required, Please Enter OP!!!';
+                    $error[$key]['error_op'] = 'Subscription Operation Is Required, Please Enter OP!!!';
                 } else {
                     if (!in_array($value['op'], ['replace', 'remove', 'add'])) {
-                        $error[$key]['error_op'] = 'Plan OP Must Be "replace", "remove" or "add"';
+                        $error[$key]['error_op'] = 'Subscription OP Must Be "replace", "remove" or "add"';
                     }
                 }
 
                 if (empty($value['path'])) {
-                    $error[$key]['error_path'] = 'Plan Path Is Required, "path" Describe On Which Field You Want To Perform Operation.';
+                    $error[$key]['error_path'] = 'Subscription Path Is Required, "path" Describe On Which Field You Want To Perform Operation.';
                 } else {
                     if (!in_array($value['path'], ['/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price', '/plan/payment_preferences/payment_failure_threshold', '/plan/payment_preferences/auto_bill_outstanding', '/payment_preferences/payment_failure_threshold', '/plan/taxes/percentage'])) {
-                        $error[$key]['error_path'] = 'Subscription Plan Update path Must Be "/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price", "/plan/payment_preferences/payment_failure_threshold", "/plan/payment_preferences/auto_bill_outstanding", "/payment_preferences/payment_failure_threshold", "/plan/taxes/percentage"';
+                        $error[$key]['error_path'] = 'Please Refer Paypal Developers Doc https://developer.paypal.com/docs/api/subscriptions/v1/#subscriptions_patch and Subscription Plan Update path Must Be "/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price", "/plan/payment_preferences/payment_failure_threshold", "/plan/payment_preferences/auto_bill_outstanding", "/payment_preferences/payment_failure_threshold", "/plan/taxes/percentage"';
                     }
                 }
 
-                if (empty($value['value'])) {
+                if (!isset($value['value'])) {
                     $error[$key]['error_value'] = 'Value Is Required, Please Enter Value To Be Update!!!';
                 }
 
                 if ($value['path'] == '/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price') {
-                    $data[$key] = [
+                    $json_data[$key] = [
                         'op' => $value['op'],
                         'path' => $value['path'],
                         'value' => [
@@ -127,7 +126,7 @@ class Subscription
                         ]
                     ];
                 } else {
-                    $data[$key] = [
+                    $json_data[$key] = [
                         'op' => $value['op'],
                         'path' => $value['path'],
                         'value' => $value['value']
@@ -138,23 +137,20 @@ class Subscription
             if (!empty($error)) {
                 return $error;
             }
-
-            dd($json_data);
-
             try {
                 $url = $this->paypalUrl . '/v1/billing/subscriptions/';
-                $res = $this->client->request('PATCH', $url, [
+                $this->client->request('PATCH', $url, [
                     'headers' => [
                         'Accept' => 'application/json',
                         'Accept-Language' => 'en_US',
                         'Content-Type' => 'application/json',
                         'Authorization' => 'Bearer ' . $this->bearer_token,
                     ],
-                    'json' => [$json_data]
+                    'json' => $json_data
                 ]);
-                return json_decode($res->getBody()->getContents());
+                return 'Subscription Updated!';
             } catch (ClientException $e) {
-                print_r($e->getResponse()->getBody()->getContents());
+                print_r($e->getResponse()->getBody());
             }
         } else {
             return 'Date Cannot Be Null';

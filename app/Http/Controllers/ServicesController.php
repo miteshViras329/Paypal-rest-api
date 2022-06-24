@@ -46,9 +46,20 @@ class ServicesController extends Controller
             // 'price_value' => 50,
             // 'currency_code' => 'USD',
             // 'setup_fee' => 0
-            'brand_name' => 'Skyrush V2',
-            'auto_renewal' => true,
-            'local' => 'en-US'
+            // 'brand_name' => 'Skyrush V2',
+            // 'auto_renewal' => true,
+            // 'local' => 'en-US'
+            [
+                'op' => 'replace',
+                'path' => '/plan/payment_preferences/auto_bill_outstanding',
+                'value' => true
+            ],
+            [
+                'op' => 'replace',
+                'path' => '/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price',
+                'value' => '500',
+                'currency_code' => 'USD'
+            ]
         ];
         // dd($paypalPlan->createPlan('PROD-3DN36045AB844170W', $data));
         // dd($paypalProduct->showList());
@@ -57,6 +68,7 @@ class ServicesController extends Controller
         // dd($paypalProduct->updateProduct('PROD-3DN36045AB844170W', $data));
         // dd($paypalSubscription->createSubscription('P-3D018928N97379438MK2YHEI', $data));
         // dd($paypalSubscription->show('I-W81GSLF3FPJL'));
-        dd($paypalSubscription->executeSubscription('I-W81GSLF3FPJL'));
+        // dd($paypalSubscription->executeSubscription('I-W81GSLF3FPJL'));
+        dd($paypalSubscription->updateSubscription('I-W81GSLF3FPJL', $data));
     }
 }
