@@ -7,6 +7,7 @@ use App\Services\Paypal\Paypal;
 use App\Services\Paypal\Plan;
 use App\Services\Paypal\Product;
 use App\Services\Paypal\Subscription;
+use Carbon\Carbon;
 
 class ServicesController extends Controller
 {
@@ -49,18 +50,23 @@ class ServicesController extends Controller
             // 'brand_name' => 'Skyrush V2',
             // 'auto_renewal' => true,
             // 'local' => 'en-US'
-            [
-                'op' => 'replace',
-                'path' => '/plan/payment_preferences/auto_bill_outstanding',
-                'value' => true
-            ],
-            [
-                'op' => 'replace',
-                'path' => '/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price',
-                'value' => '500',
-                'currency_code' => 'USD'
-            ]
+
+            // [
+            //     'op' => 'replace',
+            //     'path' => '/plan/payment_preferences/auto_bill_outstanding',
+            //     'value' => true
+            // ],
+            // [
+            //     'op' => 'replace',
+            //     'path' => '/plan/billing_cycles/@sequence==1/pricing_scheme/fixed_price',
+            //     'value' => '500',
+            //     'currency_code' => 'USD'
+            // ]
+
+            // 'start_date_time' => '2022-06-20 22:04:59',
+            // 'end_date_time' => '2020-06-28 14:09:59',
         ];
+        // dd($paypal->getAccessToken());
         // dd($paypalPlan->createPlan('PROD-3DN36045AB844170W', $data));
         // dd($paypalProduct->showList());
         // dd($paypalProduct->show('PROD-3DN36045AB844170W'));
@@ -69,6 +75,10 @@ class ServicesController extends Controller
         // dd($paypalSubscription->createSubscription('P-3D018928N97379438MK2YHEI', $data));
         // dd($paypalSubscription->show('I-W81GSLF3FPJL'));
         // dd($paypalSubscription->executeSubscription('I-W81GSLF3FPJL'));
-        dd($paypalSubscription->updateSubscription('I-W81GSLF3FPJL', $data));
+        // dd($paypalSubscription->updateSubscription('I-W81GSLF3FPJL', $data)); //pending
+        // dd($paypalSubscription->getTransactionList('I-W81GSLF3FPJL', $data)); //pending
+        // dd($paypalSubscription->activateSubscription('I-W81GSLF3FPJL'));
+        // dd($paypalSubscription->suspendSubscription('I-W81GSLF3FPJL'));
+        // dd($paypalSubscription->cancelSubscription('I-W81GSLF3FPJL'));
     }
 }

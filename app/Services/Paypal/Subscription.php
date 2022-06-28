@@ -2,8 +2,8 @@
 
 namespace App\Services\Paypal;
 
+use Carbon\Carbon;
 use GuzzleHttp\Client;
-use Illuminate\Support\Str;
 use App\Services\Paypal\Paypal;
 use GuzzleHttp\Exception\ClientException;
 
@@ -150,10 +150,118 @@ class Subscription
                 ]);
                 return 'Subscription Updated!';
             } catch (ClientException $e) {
-                print_r($e->getResponse()->getBody());
+                print_r($e->getResponse());
             }
         } else {
             return 'Date Cannot Be Null';
+        }
+    }
+
+    public function getTransactionList($subscription_id, $data)
+    {
+        $pattern = '/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])[T,t]([0-1][0-9]|2[0-3]):[0-5][0-9]:([0-5][0-9]|60)([.][0-9]+)?([Zz]|[+-][0-9]{2}:[0-9]{2})$/';
+        if (empty($subscription_id)) {
+            return 'Subscription ID Is Required.';
+        }
+        if (!empty($data)) {
+            if (!empty($data['start_date_time'])) {
+                $data['start_date_time'] = Carbon::create($data['start_date_time'])->toIso8601ZuluString('millisecond');
+                if (!preg_match($pattern, $data['start_date_time'])) {
+                    return 'Start Date Time Format is Invalid, ZULU Zone Designator with Millisecond Is Required';
+                }
+            } else {
+                return 'Start Date Time Is Required!';
+            }
+            if (!empty($data['end_date_time'])) {
+                $data['end_date_time'] = Carbon::create($data['end_date_time'])->toIso8601ZuluString('millisecond');
+                if (!preg_match($pattern, $data['end_date_time'])) {
+                    return 'End Date Time Format is Invalid, ZULU Zone Designator with Millisecond Is Required';
+                }
+            } else {
+                return 'End Date Time Is Required!';
+            }
+            try {
+                $url = $this->paypalUrl . '/v1/billing/subscriptions/' . $subscription_id . '/transactions?start_time=' . $data['start_date_time'] . '&end_time=' . $data['end_date_time'];
+                $res = $this->client->request('GET', $url, [
+                    'headers' => [
+                        'Accept' => 'application/json',
+                        'Accept-Language' => 'en_US',
+                        'Content-Type' => 'application/json',
+                        'Authorization' => 'Bearer ' . $this->bearer_token,
+                    ],
+                ]);
+                return json_decode($res->getBody()->getContents());
+            } catch (ClientException $e) {
+                print_r($e->getResponse());
+            }
+        } else {
+            return 'Data Is Required, Data Must Be Array Which Contains start_date and end_date';
+        }
+    }
+
+    public function activateSubscription($subscription_id)
+    {
+        if (empty($subscription_id)) {
+            return 'Subscription ID Is Required.';
+        }
+
+        try {
+            $url = $this->paypalUrl . '/v1/billing/subscriptions/' . $subscription_id . '/activate';
+            $this->client->request('POST', $url, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->bearer_token,
+                ],
+            ]);
+            return 'Subscription Activated Successfully';
+        } catch (ClientException $e) {
+            print_r($e->getResponse());
+        }
+    }
+
+    public function cancelSubscription($subscription_id)
+    {
+        if (empty($subscription_id)) {
+            return 'Subscription ID Is Required.';
+        }
+
+        try {
+            $url = $this->paypalUrl . '/v1/billing/subscriptions/' . $subscription_id . '/cancel';
+            $this->client->request('POST', $url, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->bearer_token,
+                ],
+            ]);
+            return 'Subscription Canceled Successfully';
+        } catch (ClientException $e) {
+            print_r($e->getResponse());
+        }
+    }
+
+    public function suspendSubscription($subscription_id)
+    {
+        if (empty($subscription_id)) {
+            return 'Subscription ID Is Required.';
+        }
+
+        try {
+            $url = $this->paypalUrl . '/v1/billing/subscriptions/' . $subscription_id . '/suspend';
+            $this->client->request('POST', $url, [
+                'headers' => [
+                    'Accept' => 'application/json',
+                    'Accept-Language' => 'en_US',
+                    'Content-Type' => 'application/json',
+                    'Authorization' => 'Bearer ' . $this->bearer_token,
+                ],
+            ]);
+            return 'Subscription Suspended Successfully';
+        } catch (ClientException $e) {
+            print_r($e->getResponse());
         }
     }
 }

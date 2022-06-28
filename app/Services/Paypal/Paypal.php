@@ -2,10 +2,8 @@
 
 namespace App\Services\Paypal;
 
-use Exception;
 use GuzzleHttp\Client;
 use GuzzleHttp\Exception\ClientException;
-use Illuminate\Validation\ValidationException;
 
 class Paypal
 {

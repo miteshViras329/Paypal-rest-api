@@ -3,7 +3,6 @@
 namespace App\Services\Paypal;
 
 use GuzzleHttp\Client;
-use Illuminate\Support\Str;
 use App\Services\Paypal\Paypal;
 use GuzzleHttp\Exception\ClientException;
 
